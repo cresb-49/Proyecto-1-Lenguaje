@@ -8,7 +8,8 @@
         Title=".GTinsider" Height="650" Width="800"
         WindowStyle="None"
         Background="Transparent"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen">
 
     <Border Background="White" CornerRadius="10">
         <Grid>
@@ -16,10 +17,10 @@
                 <RowDefinition Height="40px"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Name="BarraID" Grid.Row="0" Background="DarkSlateGray" MouseLeftButtonDown="Border_MouseLeftButtonDown" CornerRadius="10,10,0,0">
+            <Border Name="BarraID" Grid.Row="0" Background="#FF061826" MouseLeftButtonDown="Border_MouseLeftButtonDown" CornerRadius="10,10,0,0">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Width="760">
-                        <TextBlock Margin="340,5,270,5" FontSize="20" TextAlignment="Center"><Run Text="GTinsider"/></TextBlock>
+                        <TextBlock Margin="340,5,270,5" FontSize="20" TextAlignment="Center"><Run Text=".GTinsider" Foreground="White"/></TextBlock>
                         <Button 
                             Name="ButtonMinimizar"
                             Height="20" 
@@ -30,7 +31,7 @@
                             FontWeight="Bold" 
                             Content="-" 
                             Margin="5,0" 
-                            BorderBrush="Transparent"
+                            BorderBrush="Transparent" Click="ButtonMinimizar_Click"
                         />
                         <Button 
                             HorizontalAlignment="Right"
@@ -48,31 +49,36 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Border Name="contenedorPrincipal" Grid.Row="1" Background="DimGray" CornerRadius="0,0,10,10">
+            <Border Name="contenedorPrincipal" Grid.Row="1" Background="#FF30343F" CornerRadius="0,0,10,10">
                 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
                     <Menu VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent">
                         <MenuItem Header="_Archivos" Background="Transparent" Foreground="White">
-                            <MenuItem Header="Nuevo" Foreground="Black"/>
-                            <MenuItem Header="Abrir" Foreground="Black"/>
-                            <MenuItem Header="Guardar" Foreground="Black"/>
+                            <MenuItem Name="MenuItemNuevo"  Header="Nuevo" Foreground="Black" Click="MenuItem_Click_3"/>
+                            <MenuItem Name="MenuItemAbrir"  Header="Abrir" Foreground="Black" Click="MenuItem_Click_1"/>
+                            <MenuItem Name="MenuItemGuardar" Header="Guardar" Foreground="Black" Click="MenuItem_Click_2"/>
                         </MenuItem>
                         <MenuItem Header="_Edicion" Background="Transparent" BorderBrush="Transparent" Foreground="White">
-                            <MenuItem Command="Cut" Header="Cortar"/>
-                            <MenuItem Command="Copy" Header="Copiar"/>
-                            <MenuItem Command="Paste" Header="Pegar"/>
+                            <MenuItem Command="Cut" Header="Cortar" Foreground="Black"/>
+                            <MenuItem Command="Copy" Header="Copiar" Foreground="Black"/>
+                            <MenuItem Command="Paste" Header="Pegar" Foreground="Black"/>
                         </MenuItem>
+                        <MenuItem Header="_Compilar" Background="Transparent" Foreground="White" Click="MenuItem_Click"/>
                     </Menu>
-                    <RichTextBox Name="CampoDeEscritura" Margin="20,10,20,10" Height="350" FontSize="12" BorderBrush="Transparent" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" AcceptsReturn="True">
+                    <RichTextBox Name="CampoDeEscritura" Margin="20,10,20,10" Height="350" FontSize="12" BorderBrush="Transparent" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" SelectionBrush="Aqua" Background="#FF364652">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>
                             </Style>
+                            <Style TargetType="ScrollBar">
+                                <Setter Property="Background" Value="#FF30343F"/>
+                                <Setter Property="Foreground" Value="#FF061826"/>
+                            </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
 
-                    <Label Name="tituloApartadoCompilador" Content="Compiler log" Margin="20,0,20,10" Background="DarkSlateGray" Foreground="White"/>
-                    <RichTextBox Name="CompilerLog" Margin="20,0,20,0" Height="160" BorderBrush="Transparent" IsEnabled="False"/>
+                    <Label Name="tituloApartadoCompilador" Content="Compiler log" Margin="20,0,20,10" Background="#FF061826" Foreground="White"/>
+                    <ListBox Name="logCompile" Margin="20,0,20,20" Height="160" Background="#FF364652" Foreground="Black"/>
 
                 </StackPanel>
             </Border>
