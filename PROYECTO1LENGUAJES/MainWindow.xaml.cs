@@ -23,11 +23,31 @@ namespace PROYECTO1LENGUAJES
         public MainWindow()
         {
             InitializeComponent();
+            propiedadesGraficas();
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        
+        private void propiedadesGraficas()
+        {
+            Color colorBarra = (Color)ColorConverter.ConvertFromString("#061826");
+            Color colorContenedorPrincipal = (Color)ColorConverter.ConvertFromString("#30343F");
+            Color colorCamposDeTexto = (Color)ColorConverter.ConvertFromString("#364652");
+            BarraID.Background = new SolidColorBrush(colorBarra);
+            contenedorPrincipal.Background = new SolidColorBrush(colorContenedorPrincipal);
+            tituloApartadoCompilador.Background = new SolidColorBrush(colorBarra);
+            CampoDeEscritura.Background = new SolidColorBrush(colorCamposDeTexto);
+            CompilerLog.Background = new SolidColorBrush(colorCamposDeTexto);
+            CampoDeEscritura.Document.PageWidth = 2000;
+        }
+
     }
 }

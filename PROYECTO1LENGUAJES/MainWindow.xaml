@@ -5,20 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PROYECTO1LENGUAJES"
         mc:Ignorable="d"
-        Title=".GTinsider" Height="700" Width="800"
+        Title=".GTinsider" Height="650" Width="800"
         WindowStyle="None"
         Background="Transparent"
-        AllowsTransparency="True"
-        >
-    <Border Background="White" CornerRadius="30">
+        AllowsTransparency="True">
+
+    <Border Background="White" CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40px"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="DarkSlateGray" MouseLeftButtonDown="Border_MouseLeftButtonDown" CornerRadius="30,30,0,0">
+            <Border Name="BarraID" Grid.Row="0" Background="DarkSlateGray" MouseLeftButtonDown="Border_MouseLeftButtonDown" CornerRadius="10,10,0,0">
                 <Grid>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="760">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Width="760">
+                        <TextBlock Margin="340,5,270,5" FontSize="20" TextAlignment="Center"><Run Text="GTinsider"/></TextBlock>
+                        <Button 
+                            Name="ButtonMinimizar"
+                            Height="20" 
+                            Width="30" 
+                            Background="Transparent" 
+                            Foreground="White" 
+                            FontSize="15" 
+                            FontWeight="Bold" 
+                            Content="-" 
+                            Margin="5,0" 
+                            BorderBrush="Transparent"
+                        />
                         <Button 
                             HorizontalAlignment="Right"
                             Name="ButtonClose"
@@ -29,24 +42,39 @@
                             FontSize="15" 
                             FontWeight="Bold" 
                             Content="X" 
-                            Margin="5" 
-                            BorderBrush="Transparent"
-                            />
-                        <Button 
-                            Name="ButtonMinimizar"
-                            Height="20" 
-                            Width="30" 
-                            Background="Transparent" 
-                            Foreground="White" 
-                            FontSize="15" 
-                            FontWeight="Bold" 
-                            Content="-" 
-                            Margin="5" 
-                            BorderBrush="Transparent"
+                            Margin="1,0,0,0" 
+                            BorderBrush="Transparent" Click="ButtonClose_Click"
                             />
                     </StackPanel>
-                    
                 </Grid>
+            </Border>
+            <Border Name="contenedorPrincipal" Grid.Row="1" Background="DimGray" CornerRadius="0,0,10,10">
+                
+                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                    <Menu VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent">
+                        <MenuItem Header="_Archivos" Background="Transparent" Foreground="White">
+                            <MenuItem Header="Nuevo" Foreground="Black"/>
+                            <MenuItem Header="Abrir" Foreground="Black"/>
+                            <MenuItem Header="Guardar" Foreground="Black"/>
+                        </MenuItem>
+                        <MenuItem Header="_Edicion" Background="Transparent" BorderBrush="Transparent" Foreground="White">
+                            <MenuItem Command="Cut" Header="Cortar"/>
+                            <MenuItem Command="Copy" Header="Copiar"/>
+                            <MenuItem Command="Paste" Header="Pegar"/>
+                        </MenuItem>
+                    </Menu>
+                    <RichTextBox Name="CampoDeEscritura" Margin="20,10,20,10" Height="350" FontSize="12" BorderBrush="Transparent" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" AcceptsReturn="True">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+
+                    <Label Name="tituloApartadoCompilador" Content="Compiler log" Margin="20,0,20,10" Background="DarkSlateGray" Foreground="White"/>
+                    <RichTextBox Name="CompilerLog" Margin="20,0,20,0" Height="160" BorderBrush="Transparent" IsEnabled="False"/>
+
+                </StackPanel>
             </Border>
         </Grid>
     </Border>
