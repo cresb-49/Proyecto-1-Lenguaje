@@ -54,7 +54,9 @@ namespace PROYECTO1LENGUAJES
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            TextRange TXT = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
             
+            Console.WriteLine(TXT.Text);
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -102,16 +104,43 @@ namespace PROYECTO1LENGUAJES
         {
             CampoDeEscritura.IsEnabled = true;
         }
-
+        private Boolean bandera = true;
+        private TextPointer textPointer;
         private void CampoDeEscritura_TextChanged(object sender, TextChangedEventArgs e)
         {
+            TextPointer caretPos = CampoDeEscritura.CaretPosition;
+
+            // Set the TextPointer to the end of the current document.
+            //caretPos = caretPos.DocumentEnd;
+
+            // Specify the new caret position at the end of the current document.
+            CampoDeEscritura.CaretPosition = caretPos;
+            TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, caretPos);
+            HighlightWordInRichTextBox(textRange);
+        }
+        //private void HighlightWordInRichTextBox(System.Windows.Controls.RichTextBox richTextBox, String word, SolidColorBrush color)
+        private void HighlightWordInRichTextBox(TextRange textRange)
+        {
+            SolidColorBrush col2 = new SolidColorBrush();
+            col2.Color = Color.FromArgb(255,255,255, 255);
             SolidColorBrush col = new SolidColorBrush();
             col.Color = Color.FromArgb(255, 0, 0, 255);
 
-            TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
-            textRange.ApplyPropertyValue(TextElement.BackgroundProperty, null);
-            TextPointer textPointer = CampoDeEscritura.Document.ContentStart;
+            
+            //TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.CaretPosition.DocumentEnd);
+            textRange.ApplyPropertyValue(TextElement.BackgroundProperty,null);
+
+
+
+            int var = textRange.Text.Length;
+            Console.WriteLine(var);
+            textPointer = CampoDeEscritura.CaretPosition.GetPositionAtOffset(-10);
+            Console.WriteLine(textPointer);
+            
+
+
             TextRange tr = FindWordFromPosition(textPointer, "hola");
+
             if (!object.Equals(tr, null))
             {
                 //set the pointer to the end of "word"
@@ -120,8 +149,17 @@ namespace PROYECTO1LENGUAJES
                 //apply highlight color
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, col);
             }
-        }
 
+            TextRange tr2 = FindWordFromPosition(textPointer, " ");
+            if (!object.Equals(tr2, null))
+            {
+                //set the pointer to the end of "word"
+                textPointer = tr2.End;
+
+                //apply highlight color
+                tr2.ApplyPropertyValue(TextElement.ForegroundProperty, col2);
+            }
+        }
         private TextRange FindWordFromPosition(TextPointer position, string word)
         {
             while (position != null)
@@ -141,8 +179,6 @@ namespace PROYECTO1LENGUAJES
                 }
                 position = position.GetNextContextPosition(LogicalDirection.Forward);
             }
-
-
 
             // position will be null if "word" is not found.
             return null;
