@@ -12,7 +12,8 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
         private String[] operadoresAritmeticos = new String[] { "+", "-", "*", "/", "++", "--" };
         private String[] operadoresRelacionales = new String[] { ">", "<", ">=", "<=", "==", "!=" };
         private String[] operadoresLogicos = new String[] { "||", "&&", "!" };
-        private String[] signosAgrupacion = new String[] { "(", ")" };
+        private String inicioSignoAgrupacion = "(";
+        private String FinAgrupacionignoAgrupacion = ")";
         private String asignacionDeSentencia = "=";
         private String finalizacionSentencia = ";";
         private String[] palabrasRecervadas = new String[] { "SI", "SINO", "SINO_SI", "MENTRAS", "HACER", "DESDE", "HASTA", "INCREMENTO" };

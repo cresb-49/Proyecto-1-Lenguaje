@@ -100,7 +100,52 @@ namespace PROYECTO1LENGUAJES
         }
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
+            CampoDeEscritura.IsEnabled = true;
+        }
 
+        private void CampoDeEscritura_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SolidColorBrush col = new SolidColorBrush();
+            col.Color = Color.FromArgb(255, 0, 0, 255);
+
+            TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
+            textRange.ApplyPropertyValue(TextElement.BackgroundProperty, null);
+            TextPointer textPointer = CampoDeEscritura.Document.ContentStart;
+            TextRange tr = FindWordFromPosition(textPointer, "hola");
+            if (!object.Equals(tr, null))
+            {
+                //set the pointer to the end of "word"
+                textPointer = tr.End;
+
+                //apply highlight color
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, col);
+            }
+        }
+
+        private TextRange FindWordFromPosition(TextPointer position, string word)
+        {
+            while (position != null)
+            {
+                if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
+                {
+                    string textRun = position.GetTextInRun(LogicalDirection.Forward);
+
+                    // Find the starting index of any substring that matches "word".
+                    int indexInRun = textRun.IndexOf(word);
+                    if (indexInRun >= 0)
+                    {
+                        TextPointer start = position.GetPositionAtOffset(indexInRun);
+                        TextPointer end = start.GetPositionAtOffset(word.Length);
+                        return new TextRange(start, end);
+                    }
+                }
+                position = position.GetNextContextPosition(LogicalDirection.Forward);
+            }
+
+
+
+            // position will be null if "word" is not found.
+            return null;
         }
     }
 }

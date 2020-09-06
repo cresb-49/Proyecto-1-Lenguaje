@@ -65,7 +65,7 @@
                         </MenuItem>
                         <MenuItem Header="_Compilar" Background="Transparent" Foreground="White" Click="MenuItem_Click"/>
                     </Menu>
-                    <RichTextBox Name="CampoDeEscritura" Margin="20,10,20,10" Height="350" FontSize="12" BorderBrush="Transparent" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" SelectionBrush="Aqua" Background="#FF364652">
+                    <RichTextBox Name="CampoDeEscritura" Margin="20,10,20,10" Height="350" FontSize="12" BorderBrush="Transparent" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" SelectionBrush="Aqua" Background="#FF364652" TextChanged="CampoDeEscritura_TextChanged">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>
