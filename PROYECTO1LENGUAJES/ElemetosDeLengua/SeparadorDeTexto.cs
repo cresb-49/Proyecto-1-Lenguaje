@@ -13,13 +13,6 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
         {
 
         }
-        
-        public String cadenaReortada(String lineaAProcesar)
-        {
-            String respuesta="";
-
-            return respuesta;
-        }
         public List<String> lineasTexto(String textoAnalizar)
         {
             List<String> resultados = new List<String>();

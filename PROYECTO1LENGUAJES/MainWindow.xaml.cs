@@ -100,7 +100,13 @@ namespace PROYECTO1LENGUAJES
         }
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
-
+            CampoDeEscritura.IsEnabled = true;
         }
+        
+        private void CampoDeEscritura_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextRange textoContenido = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
+        }
+        
     }
 }
