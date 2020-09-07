@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-
+using PROYECTO1LENGUAJES.ElemetosDeLengua;
+using PROYECTO1LENGUAJES.ObjetoResaltadoDeTexto;
 
 namespace PROYECTO1LENGUAJES
 {
@@ -23,10 +25,15 @@ namespace PROYECTO1LENGUAJES
     {
         private Boolean archivoCargado =false;
         private String src="";
+
+        private int cantidadCaracteres;
+        private SeparadorDeTexto clasificadorTexto = new SeparadorDeTexto();
+
         public MainWindow()
         {
             InitializeComponent();
             propiedadesGraficas();
+            inicioHiloTexto();
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -45,7 +52,18 @@ namespace PROYECTO1LENGUAJES
             this.MenuItemGuardar.IsEnabled = false;
             this.CampoDeEscritura.IsEnabled = false;
         }
+        private void inicioHiloTexto()
+        {
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(textProcesor);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
+            dispatcherTimer.Start();
+        }
+        
+        private  void textProcesor(object sender, EventArgs e)
+        {
 
+        }
         private void ButtonMinimizar_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -54,9 +72,18 @@ namespace PROYECTO1LENGUAJES
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            TextRange TXT = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
             
-            Console.WriteLine(TXT.Text);
+            List<String> recuperacion = new List<String>();
+            TextRange documentoExtraido = new TextRange(CampoDeEscritura.CaretPosition.DocumentStart, CampoDeEscritura.CaretPosition.DocumentEnd);
+            if (!(documentoExtraido.Text.Equals("")))
+            {
+                Console.WriteLine("se selecionano la opcion");
+                recuperacion = clasificadorTexto.lineasTexto(documentoExtraido.Text);
+            }
+            foreach (string cadena in recuperacion)
+            {
+                Console.WriteLine(cadena);
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -115,7 +142,7 @@ namespace PROYECTO1LENGUAJES
 
             // Specify the new caret position at the end of the current document.
             CampoDeEscritura.CaretPosition = caretPos;
-            TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, caretPos);
+            TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, caretPos.DocumentEnd);
             HighlightWordInRichTextBox(textRange);
         }
         //private void HighlightWordInRichTextBox(System.Windows.Controls.RichTextBox richTextBox, String word, SolidColorBrush color)
@@ -128,7 +155,7 @@ namespace PROYECTO1LENGUAJES
 
             
             //TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.CaretPosition.DocumentEnd);
-            textRange.ApplyPropertyValue(TextElement.BackgroundProperty,null);
+            //textRange.ApplyPropertyValue(TextElement.BackgroundProperty,null);
 
 
 
@@ -139,7 +166,7 @@ namespace PROYECTO1LENGUAJES
             
 
 
-            TextRange tr = FindWordFromPosition(textPointer, "hola");
+            TextRange tr = FindWordFromPosition(textPointer, "hhhhhhhhhhh");
 
             if (!object.Equals(tr, null))
             {
