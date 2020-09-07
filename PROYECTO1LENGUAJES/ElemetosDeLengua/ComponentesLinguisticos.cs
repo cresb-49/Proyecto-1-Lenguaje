@@ -18,33 +18,30 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
         private String finalizacionSentencia = ";";
         private String[] palabrasRecervadas = new String[] { "SI", "SINO", "SINO_SI", "MENTRAS", "HACER", "DESDE", "HASTA", "INCREMENTO" };
         private String[] comentarios = new String[] {"//","/*","*/"};
+
+        private List<String> resultadoLexico = new List<String>();
+
         //Constructor vacio de la clase de componentes linguisticos
         public ComponentesLinguisticos()
         {
+            String proye1ct0 = "";
 
         }
-        public Boolean AnalicisPalabrasRecervadas(String cadenaAnalizar)
+
+        public void verificacionExprecion(List<String> cadenas)
         {
-            for(int i = 0; i < palabrasRecervadas.Length; i++)
+            foreach (String subcadena in cadenas)
             {
-                if (cadenaAnalizar.Equals(palabrasRecervadas.GetValue(i)))
-                {
-                    return true;
-                }
+                coincidendiaPrimitiva(subcadena);
             }
+        }
+        
+        private Boolean coincidendiaPrimitiva(String Cadena)
+        {
+
             return false;
         }
-        public Boolean AnilicisTiposPrimitivos(String cadenaAnalizar)
-        {
-            for (int i = 0; i < palabrasRecervadas.Length; i++)
-            {
-                if (cadenaAnalizar.Equals(datosPrimitivos.GetValue(i)))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
     }
 
 }

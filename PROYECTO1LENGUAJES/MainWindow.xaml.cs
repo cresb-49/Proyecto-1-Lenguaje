@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using PROYECTO1LENGUAJES.ElemetosDeLengua;
 using PROYECTO1LENGUAJES.ObjetoResaltadoDeTexto;
+using PROYECTO1LENGUAJES.HighlightWord;
 
 namespace PROYECTO1LENGUAJES
 {
@@ -23,12 +24,12 @@ namespace PROYECTO1LENGUAJES
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Boolean archivoCargado =false;
-        private String src="";
+        private Boolean archivoCargado = false;
+        private String src = "";
 
         private int cantidadCaracteres;
         private SeparadorDeTexto clasificadorTexto = new SeparadorDeTexto();
-
+        private CambioColor resaltar = new CambioColor();
         public MainWindow()
         {
             InitializeComponent();
@@ -59,8 +60,8 @@ namespace PROYECTO1LENGUAJES
             dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
             dispatcherTimer.Start();
         }
-        
-        private  void textProcesor(object sender, EventArgs e)
+
+        private void textProcesor(object sender, EventArgs e)
         {
 
         }
@@ -78,12 +79,22 @@ namespace PROYECTO1LENGUAJES
             if (!(documentoExtraido.Text.Equals("")))
             {
                 Console.WriteLine("se selecionano la opcion");
-                recuperacion = clasificadorTexto.lineasTexto(documentoExtraido.Text);
+                recuperacion = clasificadorTexto.abstraccionTexto(documentoExtraido.Text);
             }
             foreach (string cadena in recuperacion)
             {
                 Console.WriteLine(cadena);
             }
+            /*
+            if (!(documentoExtraido.Text.Equals("")))
+            {
+                Console.WriteLine("se selecionano la opcion");
+                recuperacion = clasificadorTexto.lineasTexto(documentoExtraido.Text);
+            }
+            foreach (string cadena in recuperacion)
+            {
+                Console.WriteLine(cadena);
+            }*/
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -91,7 +102,7 @@ namespace PROYECTO1LENGUAJES
             CampoDeEscritura.Document.Blocks.Clear();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Source code (*.gt)|*.gt";
-            if (openFileDialog.ShowDialog()== System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 src = openFileDialog.FileName;
                 String textoLeido = File.ReadAllText(openFileDialog.FileName);
@@ -104,7 +115,7 @@ namespace PROYECTO1LENGUAJES
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
             if (archivoCargado == true)
-            { 
+            {
                 File.Delete(src);
                 StreamWriter escritura = new StreamWriter(src);
                 TextRange rango = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.Document.ContentEnd);
@@ -125,90 +136,22 @@ namespace PROYECTO1LENGUAJES
                     //StreamWriter escritura = new StreamWriter(guardado.FileName);
                 }
             }
-            
+
         }
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             CampoDeEscritura.IsEnabled = true;
         }
-        private Boolean bandera = true;
-        private TextPointer textPointer;
+
         private void CampoDeEscritura_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextPointer caretPos = CampoDeEscritura.CaretPosition;
 
-            // Set the TextPointer to the end of the current document.
-            //caretPos = caretPos.DocumentEnd;
-
-            // Specify the new caret position at the end of the current document.
             CampoDeEscritura.CaretPosition = caretPos;
             TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, caretPos.DocumentEnd);
-            HighlightWordInRichTextBox(textRange);
+
+            resaltar.HighlightWordInRichTextBox(textRange, CampoDeEscritura);
         }
-        //private void HighlightWordInRichTextBox(System.Windows.Controls.RichTextBox richTextBox, String word, SolidColorBrush color)
-        private void HighlightWordInRichTextBox(TextRange textRange)
-        {
-            SolidColorBrush col2 = new SolidColorBrush();
-            col2.Color = Color.FromArgb(255,255,255, 255);
-            SolidColorBrush col = new SolidColorBrush();
-            col.Color = Color.FromArgb(255, 0, 0, 255);
 
-            
-            //TextRange textRange = new TextRange(CampoDeEscritura.Document.ContentStart, CampoDeEscritura.CaretPosition.DocumentEnd);
-            //textRange.ApplyPropertyValue(TextElement.BackgroundProperty,null);
-
-
-
-            int var = textRange.Text.Length;
-            Console.WriteLine(var);
-            textPointer = CampoDeEscritura.CaretPosition.GetPositionAtOffset(-10);
-            Console.WriteLine(textPointer);
-            
-
-
-            TextRange tr = FindWordFromPosition(textPointer, "hhhhhhhhhhh");
-
-            if (!object.Equals(tr, null))
-            {
-                //set the pointer to the end of "word"
-                textPointer = tr.End;
-
-                //apply highlight color
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, col);
-            }
-
-            TextRange tr2 = FindWordFromPosition(textPointer, " ");
-            if (!object.Equals(tr2, null))
-            {
-                //set the pointer to the end of "word"
-                textPointer = tr2.End;
-
-                //apply highlight color
-                tr2.ApplyPropertyValue(TextElement.ForegroundProperty, col2);
-            }
-        }
-        private TextRange FindWordFromPosition(TextPointer position, string word)
-        {
-            while (position != null)
-            {
-                if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
-                {
-                    string textRun = position.GetTextInRun(LogicalDirection.Forward);
-
-                    // Find the starting index of any substring that matches "word".
-                    int indexInRun = textRun.IndexOf(word);
-                    if (indexInRun >= 0)
-                    {
-                        TextPointer start = position.GetPositionAtOffset(indexInRun);
-                        TextPointer end = start.GetPositionAtOffset(word.Length);
-                        return new TextRange(start, end);
-                    }
-                }
-                position = position.GetNextContextPosition(LogicalDirection.Forward);
-            }
-
-            // position will be null if "word" is not found.
-            return null;
-        }
     }
 }
