@@ -72,48 +72,98 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
             String apuntador1;
             String apuntador2;
             int i = 0;
+
             for (i = 0; i < (legth - 1); i++)
             {
                 apuntador1 = arreglo.Substring(i, 1);
                 apuntador2 = arreglo.Substring((i + 1), 1);
-                if(!(apuntador1.Equals(" "))&&apuntador2.Equals(" "))
+
+                if (!(apuntador1.Equals(" ")) && apuntador2.Equals(" "))
                 {
                     fin = i;
                     String extraccion = extraerTexto(arreglo, inicio, fin);
+                    Console.WriteLine("Apuntador1: " + apuntador1);
+                    Console.WriteLine("Apuntador2: " + apuntador2);
+                    Console.WriteLine("Aqui 1: " + extraccion + "---");
                     palabras.Add(extraccion);
+                    inicio = fin + 1;
                 }
                 if (apuntador1.Equals(" ") && !(apuntador2.Equals(" ")))
                 {
-                    inicio = i+1;
+                    inicio = i + 1;
                 }
                 if (!(saltoPorSignoEspecial(apuntador1)) && saltoPorSignoEspecial(apuntador2))
                 {
-                    if(!(apuntador1.Equals(" ")))
+                    if(apuntador1.Equals(" "))
+                    {
+                        inicio = i + 1;
+                    }
+                    else
                     {
                         fin = i;
                         String extraccion = extraerTexto(arreglo, inicio, fin);
+                        Console.WriteLine("Apuntador1: " + apuntador1);
+                        Console.WriteLine("Apuntador2: " + apuntador2);
+                        Console.WriteLine("Aqui 2: " + extraccion + "---");
                         palabras.Add(extraccion);
+                        inicio = fin + 1;
                     }
                 }
                 if (saltoPorSignoEspecial(apuntador1) && !(saltoPorSignoEspecial(apuntador2)))
                 {
-                    String extraccion = extraerTexto(arreglo, i, i);
-                    palabras.Add(extraccion);
-                    inicio = i + 1;
+                    if (apuntador2.Equals(" "))
+                    {
+                        inicio = i + 1;
+                    }
+                    else
+                    {
+                        fin = i;
+                        inicio = i;
+                        String extraccion = extraerTexto(arreglo, inicio, fin);
+                        Console.WriteLine("Aqui 3: " + extraccion +"---");
+                        palabras.Add(extraccion);
+                        inicio = fin + 1;
+                    }
                 }
                 if (igualdadesAceptadas(apuntador1, apuntador2))
                 {
-                    String extraccion = extraerTexto(arreglo, i, i+1);
-                    palabras.Add(extraccion);
-                    i = i + 1;
-                    inicio = i+1;
-                    fin = i + 2;
+                    if (apuntador1.Equals("/") && apuntador2.Equals("/"))
+                    {
+                        inicio = i;
+                        fin = i + 1;
+                        String extraccion = extraerTexto(arreglo, inicio,fin);
+                        Console.WriteLine("aqui 6: " + extraccion + "---");
+                        palabras.Add(extraccion);
+
+                        inicio = fin + 1;
+                        fin = arreglo.IndexOf("\n", i);
+
+                        extraccion = extraerTexto(arreglo, inicio, fin);
+                        Console.WriteLine("aqui 7: " + extraccion + "---");
+                        palabras.Add(extraccion);
+
+                        i = fin - 1;
+                        inicio = fin+1;
+                    }
+                    else
+                    {
+                        inicio = i;
+                        fin = i + 1;
+                        String extraccion = extraerTexto(arreglo, inicio,fin);
+                        Console.WriteLine("aqui 4: " + extraccion + "---");
+                        palabras.Add(extraccion);
+                        inicio = i + 2;
+                        i = i + 1;
+                    }
                 }
                 else
                 {
                     if (saltoPorSignoEspecial(apuntador1) && saltoPorSignoEspecial(apuntador2))
                     {
-                        String extraccion = extraerTexto(arreglo, i, i);
+                        inicio = i;
+                        fin = inicio;
+                        String extraccion = extraerTexto(arreglo, inicio, fin);
+                        Console.WriteLine("aqui 5: " + extraccion + "---");
                         palabras.Add(extraccion);
                         inicio = i + 1;
                     }
@@ -156,6 +206,18 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                 return true;
             }
             if (apuntador1.Equals("!") && apuntador2.Equals("="))
+            {
+                return true;
+            }
+            if (apuntador1.Equals("/") && apuntador2.Equals("*"))
+            {
+                return true;
+            }
+            if (apuntador1.Equals("*") && apuntador2.Equals("/"))
+            {
+                return true;
+            }
+            if (apuntador1.Equals("/") && apuntador2.Equals("/"))
             {
                 return true;
             }
