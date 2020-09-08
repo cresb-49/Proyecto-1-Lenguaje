@@ -17,6 +17,7 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
         private String[] signoAgrupacion = new string[] {"(",")"};
         private String asignacionDeSentencia = "=";
         private String finalizacionSentencia = ";";
+        private String comillas = "\"";
 
         private int tamanoMax=0;
         //Constructor vacio de la separacion de texto
@@ -59,11 +60,10 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
             }
             return cantidadEspacios;
         }
-
         public List<String> abstraccionTexto(String arreglo)
         {
             //agrega el caracter de finalizacion de lectura
-            arreglo = arreglo + " ";
+            arreglo = arreglo + " "+"\n";
             List<String> palabras = new List<String>();
 
             int inicio = 0;
@@ -82,11 +82,30 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                 {
                     fin = i;
                     String extraccion = extraerTexto(arreglo, inicio, fin);
-                    Console.WriteLine("Apuntador1: " + apuntador1);
-                    Console.WriteLine("Apuntador2: " + apuntador2);
-                    Console.WriteLine("Aqui 1: " + extraccion + "---");
-                    palabras.Add(extraccion);
-                    inicio = fin + 1;
+                    //Console.WriteLine("Apuntador1: " + apuntador1);
+                    //Console.WriteLine("Apuntador2: " + apuntador2);
+                    //Console.WriteLine("Aqui 1: " + extraccion + "---");
+                    if(extraccion.Equals(comillas) || extraccion.StartsWith(comillas))
+                    {
+                        //inicio es el mismo de la cadena de segundo analicis
+                        //Console.WriteLine("Candidato");
+                        int saltoDeLinea = arreglo.IndexOf("\n", inicio);
+                        //Console.WriteLine("Salto de linea: " + inicio);
+                        int rango = saltoDeLinea - inicio;
+                        int segundaComilla = arreglo.IndexOf(comillas,  inicio + 1,rango);
+                        //Console.WriteLine("inicio: "+inicio);
+                        //Console.WriteLine("Segunda comilla: "+segundaComilla);
+                        fin = segundaComilla;
+                        extraccion = extraerTexto(arreglo, inicio, fin);
+                        palabras.Add(extraccion);
+                        inicio = fin + 1;
+                        i = fin - 1;
+                    }
+                    else
+                    {
+                        palabras.Add(extraccion);
+                        inicio = fin + 1;
+                    }
                 }
                 if (apuntador1.Equals(" ") && !(apuntador2.Equals(" ")))
                 {
@@ -102,11 +121,30 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                     {
                         fin = i;
                         String extraccion = extraerTexto(arreglo, inicio, fin);
-                        Console.WriteLine("Apuntador1: " + apuntador1);
-                        Console.WriteLine("Apuntador2: " + apuntador2);
-                        Console.WriteLine("Aqui 2: " + extraccion + "---");
-                        palabras.Add(extraccion);
-                        inicio = fin + 1;
+                        //Console.WriteLine("Apuntador1: " + apuntador1);
+                        //Console.WriteLine("Apuntador2: " + apuntador2);
+                        //Console.WriteLine("Aqui 2: " + extraccion + "---");
+                        if (extraccion.Equals(comillas) || extraccion.StartsWith(comillas))
+                        {
+                            //inicio es el mismo de la cadena de segundo analicis
+                            //Console.WriteLine("Candidato");
+                            int saltoDeLinea = arreglo.IndexOf("\n", inicio);
+                            //Console.WriteLine("Salto de linea: " + inicio);
+                            int rango = saltoDeLinea - inicio;
+                            int segundaComilla = arreglo.IndexOf(comillas, inicio + 1, rango);
+                            //Console.WriteLine("inicio: " + inicio);
+                            //Console.WriteLine("Segunda comilla: " + segundaComilla);
+                            fin = segundaComilla;
+                            extraccion = extraerTexto(arreglo, inicio, fin);
+                            palabras.Add(extraccion);
+                            inicio = fin + 1;
+                            i = fin - 1;
+                        }
+                        else
+                        {
+                            palabras.Add(extraccion);
+                            inicio = fin + 1;
+                        }
                     }
                 }
                 if (saltoPorSignoEspecial(apuntador1) && !(saltoPorSignoEspecial(apuntador2)))
@@ -117,12 +155,14 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                     }
                     else
                     {
+                        
                         fin = i;
                         inicio = i;
                         String extraccion = extraerTexto(arreglo, inicio, fin);
-                        Console.WriteLine("Aqui 3: " + extraccion +"---");
+                        //Console.WriteLine("Aqui 3: " + extraccion +"---");
                         palabras.Add(extraccion);
                         inicio = fin + 1;
+                        
                     }
                 }
                 if (igualdadesAceptadas(apuntador1, apuntador2))
@@ -132,14 +172,14 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                         inicio = i;
                         fin = i + 1;
                         String extraccion = extraerTexto(arreglo, inicio,fin);
-                        Console.WriteLine("aqui 6: " + extraccion + "---");
+                        //Console.WriteLine("aqui 6: " + extraccion + "---");
                         palabras.Add(extraccion);
 
                         inicio = fin + 1;
                         fin = arreglo.IndexOf("\n", i);
 
                         extraccion = extraerTexto(arreglo, inicio, fin);
-                        Console.WriteLine("aqui 7: " + extraccion + "---");
+                        //Console.WriteLine("aqui 7: " + extraccion + "---");
                         palabras.Add(extraccion);
 
                         i = fin - 1;
@@ -149,11 +189,12 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                     {
                         inicio = i;
                         fin = i + 1;
-                        String extraccion = extraerTexto(arreglo, inicio,fin);
-                        Console.WriteLine("aqui 4: " + extraccion + "---");
+                        String extraccion = extraerTexto(arreglo, inicio, fin);
+                        //Console.WriteLine("aqui 4: " + extraccion + "---");
                         palabras.Add(extraccion);
                         inicio = i + 2;
                         i = i + 1;
+                        
                     }
                 }
                 else
@@ -163,7 +204,7 @@ namespace PROYECTO1LENGUAJES.ElemetosDeLengua
                         inicio = i;
                         fin = inicio;
                         String extraccion = extraerTexto(arreglo, inicio, fin);
-                        Console.WriteLine("aqui 5: " + extraccion + "---");
+                        //Console.WriteLine("aqui 5: " + extraccion + "---");
                         palabras.Add(extraccion);
                         inicio = i + 1;
                     }
